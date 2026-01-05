@@ -1,0 +1,997 @@
+{
+	"info": {
+		"_postman_id": "b9a1e65f-0bc8-4147-99be-94a98f8f48d5",
+		"name": "Reqres_API_Collections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Page_1",
+			"item": [
+				{
+					"name": "Fetch a list of users with pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7ac475f-3ed4-401f-ad56-7e68969e493a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email Schema Test matching\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[3].email).to.eql(\"eve.holt@reqres.in\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "263c5188-2657-4456-8671-1fdc3892a441",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/api/users?page=1",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n## 📦 Sample GET Users\n\n``` json\n {\n     \"id\": 1,\n     \"email\": \"george.bluth@reqres.in\",\n     \"first_name\": \"George\",\n     \"last_name\": \"Bluth\",\n     \"avatar\": \"https://reqres.in/img/faces/1-image.jpg\"\n  }\n\n ```\n\nStartFragment\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `data.id` | Integer | Unique ID of the created Users |\n| `data.email` | String | String Email of the Users |\n| `Data.first_name` | String | String First name of the Uses |\n| `data.last_name` | String | String Last name of the Uses |\n| `data.avatar` | String | String Image of the Uses |\n\n### 📘 Notes\n\n- This response is returned when fetching a User **by ID** using `GET /users/:id`.\n    \n- Make sure to handle `404 Not Found` if the users ID does not exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch a single user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "20bf2e5d-593e-4550-b2ac-4a971b77a733",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Etag is present\", function () {\r",
+									"    pm.response.to.have.header(\"Etag\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Let Content Caddy generate it for you.\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"text in Support object is matching\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.support.text).to.eql(\"Tired of writing endless social media content? Let Content Caddy generate it for you.\");\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Email id check for specific user\", function () {\r",
+									"//     var jsonData = pm.response.json();\r",
+									"//     pm.expect(jsonData.data[3].email).to.eql(\"eve.holt@reqres.in\");\r",
+									"// });\r",
+									"\r",
+									"// pm.test(\"id check\", function () {\r",
+									"//     var jsonData = pm.response.json();\r",
+									"//     pm.expect(jsonData.data[3].id).to.eql(\"4\");\r",
+									"// });\r",
+									"\r",
+									"var schema = {\r",
+									"\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"first_name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"last_name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"avatar\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"email\",\r",
+									"        \"first_name\",\r",
+									"        \"last_name\",\r",
+									"        \"avatar\"\r",
+									"      ]\r",
+									"    },\r",
+									"    \"support\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"url\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"text\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"url\",\r",
+									"        \"text\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"data\",\r",
+									"    \"support\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"\r",
+									"// var data1 = [true, false];\r",
+									"// var data2 = [true, 123];\r",
+									"\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email ID check for @ in email id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.email).to.contain(\"@\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Response status code is 404\", function () {\r",
+									"//     pm.expect(pm.response.code).to.equal(404);\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"//     pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json; charset=utf-8');\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Validate that the response body is empty when the user ID does not exist\", function () {\r",
+									"//     const responseData = pm.response.json();\r",
+									"    \r",
+									"//     pm.expect(responseData).to.be.an('object').that.is.empty;\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "a084880a-055e-4ed4-8cfe-31ef1bf97e21",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{BaseURL}}/api/users/3",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n## 📦 Sample GET Single User\n\n``` json\n {\n     \"id\": 1,\n     \"email\": \"george.bluth@reqres.in\",\n     \"first_name\": \"George\",\n     \"last_name\": \"Bluth\",\n     \"avatar\": \"https://reqres.in/img/faces/1-image.jpg\"\n  }\n\n ```\n\nStartFragment\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `data.id` | Integer | Unique ID of the created Users |\n| `data.email` | String | String Email of the Users |\n| `Data.first_name` | String | String First name of the Uses |\n| `data.last_name` | String | String Last name of the Uses |\n| `data.avatar` | String | String Image of the Uses |\n\n### 📘 Notes\n\n- This response is returned when fetching a User **by ID** using `GET /users/:id`.\n    \n- Make sure to handle `404 Not Found` if the users ID does not exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Single User Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1a7757e3-c804-4d49-9b3c-e2db4d20f269",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response schema is an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.empty;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "08c26362-5f19-4f9c-8e5b-18d3d41f1335",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{BaseURL}}/api/users/20",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n### 📘 Notes\n\n- Make sure to handle `404 Not Found` if the users ID does not exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "be474dbe-9418-4f7f-99df-54ee07093d40",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "c4949ece-dc43-497c-aeee-58c50cc2170b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"job\": \"{{$randomJobTitle}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURL}}/api/users",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4598891b-3d38-4452-a95f-a675c5d4f0c7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "3ead7954-54c9-408b-9f05-76df77e2824b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"job\": \"{{$randomJobTitle}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/users/:id",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n### 📦 Sample Successful Response\n\n``` json\n{\n    \"name\": \"Najmus\",\n    \"job\": \"MARN Stack Developer\",\n    \"updatedAt\": \"2025-07-29T13:44:31.277Z\"\n}\n\n ```\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `name` | String | String First name of the users |\n| `job` | String | String Job of the Users |\n| `updatedAt` | String | String Updated At Users |\n\n### ✅ Usage Notes\n\n- This response is returned after a successful `PUT /users/:id` request.\n    \n- Ensure that proper **authentication headers** are included for update actions."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc3a2cf8-5caa-4187-aae1-390ac024e5f2",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "f4f05238-6a19-46b2-bbc6-43649718bf53",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/api/users/:id",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{num}}"
+								}
+							]
+						},
+						"description": "Content-Type:\n\n```\napplication/json\n\n\n\n ```\n\n📦 Sample Response\n\n- Message: No Content\n    \n- Status Code: 204"
+					},
+					"response": []
+				}
+			],
+			"id": "b72cad7b-2c8d-4005-8c7c-4627bdff599c",
+			"description": "Base URL:\n\n```\nhttps://reqres.in/\n\n ```"
+		},
+		{
+			"name": "Page_2",
+			"item": [
+				{
+					"name": "Fetch a list of users with pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "636f473c-a269-4023-bcca-166d3c664e4d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email Schema Test matching\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[4].email).to.eql(\"george.edwards@reqres.in\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "6698ab9b-d5ea-4ee0-93a5-2fab85a1e1f1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/api/users?page=2",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n## 📦 Sample GET Users\n\n``` json\n{\n     \"id\": 7,\n     \"email\": \"michael.lawson@reqres.in\",\n     \"first_name\": \"Michael\",\n     \"last_name\": \"Lawson\",\n     \"avatar\": \"https://reqres.in/img/faces/7-image.jpg\"\n}\n\n ```\n\nStartFragment\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `data.id` | Integer | Unique ID of the created Users |\n| `data.email` | String | String Email of the Users |\n| `Data.first_name` | String | String First name of the Uses |\n| `data.last_name` | String | String Last name of the Uses |\n| `data.avatar` | String | String Image of the Uses |\n\n### 📘 Notes\n\n- This response is returned when fetching a User **by ID** using `GET /users/:id`.\n    \n- Make sure to handle `404 Not Found` if the users ID does not exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch a single user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "45720e78-2a03-4cb0-ba65-648cc46b1668",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Etag is present\", function () {\r",
+									"    pm.response.to.have.header(\"Etag\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Let Content Caddy generate it for you.\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"text in Support object is matching\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.support.text).to.eql(\"Tired of writing endless social media content? Let Content Caddy generate it for you.\");\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Email id check for specific user\", function () {\r",
+									"//     var jsonData = pm.response.json();\r",
+									"//     pm.expect(jsonData.data[3].email).to.eql(\"eve.holt@reqres.in\");\r",
+									"// });\r",
+									"\r",
+									"// pm.test(\"id check\", function () {\r",
+									"//     var jsonData = pm.response.json();\r",
+									"//     pm.expect(jsonData.data[3].id).to.eql(\"4\");\r",
+									"// });\r",
+									"\r",
+									"var schema = {\r",
+									"\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"first_name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"last_name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"avatar\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"email\",\r",
+									"        \"first_name\",\r",
+									"        \"last_name\",\r",
+									"        \"avatar\"\r",
+									"      ]\r",
+									"    },\r",
+									"    \"support\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"url\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"text\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"url\",\r",
+									"        \"text\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"data\",\r",
+									"    \"support\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"\r",
+									"// var data1 = [true, false];\r",
+									"// var data2 = [true, 123];\r",
+									"\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email ID check for @ in email id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.email).to.contain(\"@\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Response time is less than 200ms\", function () {\r",
+									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Validate that the response body is empty when the user ID does not exist\", function () {\r",
+									"//     const responseData = pm.response.json();\r",
+									"//     pm.expect(responseData).to.be.an('object').that.is.empty;\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "9e78abcc-d777-4033-abe1-44144be2b32a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{BaseURL}}/api/users/7",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n## 📦 Sample GET Single User\n\n``` json\n {\n      \"id\": 7,\n      \"email\": \"michael.lawson@reqres.in\",\n      \"first_name\": \"Michael\",\n      \"last_name\": \"Lawson\",\n      \"avatar\": \"https://reqres.in/img/faces/7-image.jpg\"\n }\n\n ```\n\nStartFragment\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `data.id` | Integer | Unique ID of the created Users |\n| `data.email` | String | String Email of the Users |\n| `Data.first_name` | String | String First name of the Uses |\n| `data.last_name` | String | String Last name of the Uses |\n| `data.avatar` | String | String Image of the Uses |\n\n### 📘 Notes\n\n- This response is returned when fetching a User **by ID** using `GET /users/:id`.\n    \n- Make sure to handle `404 Not Found` if the users ID does not exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Single User Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5ae85502-ead4-4d6b-8b10-6efad507971a",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response schema is an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.empty;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "d6f553f6-8aeb-46f9-b722-54c08e97fa93",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{BaseURL}}/api/users/20",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n### 📘 Notes\n\n- Make sure to handle `404 Not Found` if the users ID does not exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"id": "b3b45fa9-ef21-4a78-91e4-e261691bba72"
+							}
+						}
+					],
+					"id": "6c651ebf-ea89-4bad-91e3-d8af44586c9b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Aminul\",\r\n  \"job\": \"SQA Engineer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURL}}/api/users",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1d32b9dd-e006-44a1-bee2-425320d8c8ad",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "33dae6f3-7bcc-454e-af97-f24aab4e27a0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"job\": \"{{$randomJobTitle}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/users/:id",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n### 📦 Sample Successful Response\n\n``` json\n{\n    \"name\": \"Najmus\",\n    \"job\": \"MARN Stack Developer\",\n    \"updatedAt\": \"2025-07-29T13:44:31.277Z\"\n}\n\n ```\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `name` | String | String First name of the users |\n| `job` | String | String Job of the Users |\n| `updatedAt` | String | String Updated At Users |\n\n### ✅ Usage Notes\n\n- This response is returned after a successful `PUT /users/:id` request.\n    \n- Ensure that proper **authentication headers** are included for update actions."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b2218429-1039-458d-bdf6-d1cf5c279497",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "55470a55-8892-4ab8-9117-b17c7af2f1ee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/api/users/:id",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{num}}"
+								}
+							]
+						},
+						"description": "Content-Type:\n\n```\napplication/json\n\n\n\n ```\n\n📦 Sample Response\n\n- Message: No Content\n    \n- Status Code: 204"
+					},
+					"response": []
+				}
+			],
+			"id": "13f55ad3-36df-4bbd-a67a-6f1fe4bef311",
+			"description": "Base URL:\n\n```\nhttps://reqres.in/\n\n ```"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9a86e7b5-d56b-448b-9389-3033095dfd84",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "de0f6d9a-79ba-4be6-9827-094dff5e4fad",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "num",
+			"value": ""
+		}
+	]
+}
