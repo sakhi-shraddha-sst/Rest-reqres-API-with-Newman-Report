@@ -103,94 +103,142 @@ Before running this project, ensure you have the following installed:
 
 ```
 Rest-reqres-API-with-Newman-Report/
-├── collections/                 # Postman collection files
-│   ├── reqres-api-tests.postman_collection.json
-│   └── environment.postman_environment.json
-├── data/                        # Test data files
-│   ├── users.csv
-│   └── test-data.json
-├── reports/                     # Generated test reports
-│   ├── html/
-│   ├── json/
-│   └── junit/
-├── scripts/                     # Automation scripts
-│   ├── run-tests.sh
-│   └── generate-report.js
-├── .github/workflows/           # CI/CD pipelines
-│   └── api-tests.yml
+├── Postman Collections/         # Postman collection files
+│   └── Reqres_API_Collections.json
 ├── README.md                    # Project documentation
-├── package.json                 # Node.js dependencies
-└── newman-config.json          # Newman configuration
+└── .git/                        # Git repository
 ```
+
+## Collection Structure
+
+The Postman collection `Reqres_API_Collections.json` contains the following organized test suites:
+
+### Page_1 & Page_2 Folders
+Both folders contain identical test requests for comprehensive validation:
+
+#### User Management Tests
+1. **Fetch a list of users with pagination**
+   - **Method**: GET
+   - **Endpoint**: `{{BaseURL}}/api/users?page=1`
+   - **Tests**:
+     - Status code validation (200)
+     - Response time < 1000ms
+     - Email schema validation (eve.holt@reqres.in)
+
+2. **Fetch a single user by ID**
+   - **Method**: GET
+   - **Endpoint**: `{{BaseURL}}/api/users/{id}`
+   - **Tests**:
+     - Status code validation (200)
+     - Response time < 1000ms
+     - Content-Type header presence
+     - Etag header presence
+     - Response body validation
+
+3. **Single User Not Found**
+   - **Method**: GET
+   - **Endpoint**: `{{BaseURL}}/api/users/23` (non-existent user)
+   - **Tests**:
+     - Status code validation (404)
+     - Response time validation
+     - Error response handling
+
+4. **Create a new user**
+   - **Method**: POST
+   - **Endpoint**: `{{BaseURL}}/api/users`
+   - **Body**: `{"name": "{{$randomFirstName}}", "job": "{{$randomJobTitle}}"}`
+   - **Tests**:
+     - Status code validation (201)
+     - Collection variable setting for created user ID
+
+5. **Update an existing user**
+   - **Method**: PUT
+   - **Endpoint**: `{{BaseURL}}/api/users/{id}`
+   - **Body**: `{"name": "{{$randomFirstName}}", "job": "{{$randomJobTitle}}"}`
+   - **Tests**:
+     - Status code validation (200)
+
+6. **Delete a user**
+   - **Method**: DELETE
+   - **Endpoint**: `{{BaseURL}}/api/users/{id}`
+   - **Tests**:
+     - Status code validation (204)
 
 ## API Endpoints Tested
 
-The project covers testing of the following ReqRes API endpoints:
+The collection covers testing of the following ReqRes API endpoints:
 
 ### Users Endpoints
-- `GET /api/users` - List users with pagination
-- `GET /api/users/{id}` - Get single user
+- `GET /api/users?page={page}` - List users with pagination
+- `GET /api/users/{id}` - Get single user by ID
+- `GET /api/users/23` - Single user not found (404 error case)
 - `POST /api/users` - Create new user
-- `PUT /api/users/{id}` - Update user
-- `PATCH /api/users/{id}` - Partially update user
-- `DELETE /api/users/{id}` - Delete user
-
-### Resources Endpoints
-- `GET /api/unknown` - List resources
-- `GET /api/unknown/{id}` - Get single resource
-
-### Authentication Endpoints
-- `POST /api/login` - User login
-- `POST /api/register` - User registration
+- `PUT /api/users/{id}` - Update existing user
+- `DELETE /api/users/{id}` - Delete a user
 
 ## Test Scenarios
 
 ### Functional Testing
-- **CRUD Operations**: Complete Create, Read, Update, Delete cycles
-- **Pagination**: Testing list endpoints with different page parameters
-- **Data Validation**: Ensuring response data matches expected schemas
-- **Error Handling**: Testing invalid requests and error responses
+- **CRUD Operations**: Complete Create, Read, Update, Delete cycles for users
+- **Pagination**: Testing list endpoints with page parameters
+- **Error Handling**: Testing 404 responses for non-existent users
+- **Data Validation**: Schema validation for user data (email verification)
 
 ### Performance Testing
-- **Response Time**: Asserting maximum response times
-- **Concurrent Requests**: Testing API behavior under load
-- **Rate Limiting**: Verifying API rate limit handling
+- **Response Time Validation**: All requests tested for < 1000ms response time
+- **Concurrent Testing**: Duplicate test suites in Page_1 and Page_2 folders
 
-### Security Testing
-- **Input Validation**: Testing with malicious or invalid input
-- **Authentication**: Verifying secure endpoints
-- **Data Exposure**: Checking for sensitive data leakage
+### Validation Testing
+- **Status Code Verification**: 
+  - 200 for successful GET/PUT operations
+  - 201 for successful POST creation
+  - 204 for successful DELETE operations
+  - 404 for user not found scenarios
+- **Header Validation**: Content-Type and Etag headers presence verification
+- **Response Body Validation**: JSON structure and data integrity checks
 
-### Integration Testing
-- **End-to-End Flows**: Complete user journeys
-- **Data Consistency**: Ensuring data integrity across operations
-- **API Dependencies**: Testing interdependent endpoints
+### Data-Driven Testing
+- **Dynamic Data**: Uses Postman dynamic variables (`{{$randomFirstName}}`, `{{$randomJobTitle}}`)
+- **Variable Management**: Collection variables for storing and reusing created user IDs
+
+## Test Validations & Assertions
+
+### Status Code Assertions
+- **GET /api/users**: Expects 200 OK
+- **GET /api/users/{id}**: Expects 200 OK for valid users, 404 for non-existent users
+- **POST /api/users**: Expects 201 Created
+- **PUT /api/users/{id}**: Expects 200 OK
+- **DELETE /api/users/{id}**: Expects 204 No Content
+
+### Response Time Assertions
+- All requests validate response time < 1000ms
+- Ensures API performance meets requirements
+
+### Header Validations
+- **Content-Type**: Presence verification for API responses
+- **Etag**: Header presence validation for caching support
+
+### Data Schema Validations
+- **Email Validation**: Specific email format checking (eve.holt@reqres.in)
+- **JSON Structure**: Response body structure validation
+- **Data Integrity**: Ensuring required fields are present
+
+### Variable Management
+- **ID Storage**: Automatically stores created user ID for subsequent operations
+- **Dynamic Content**: Random data generation for test variety
 
 ## Running Tests
 
 ### Basic Test Execution
 ```bash
 # Run all tests with default settings
-newman run collections/reqres-api-tests.postman_collection.json
+newman run "Postman Collections/Reqres_API_Collections.json"
 
-# Run with environment file
-newman run collections/reqres-api-tests.postman_collection.json \
-  -e collections/environment.postman_environment.json
-```
-
-### Advanced Execution Options
-```bash
-# Run with custom data file
-newman run collections/reqres-api-tests.postman_collection.json \
-  -d data/users.csv
-
-# Run specific folder/requests
-newman run collections/reqres-api-tests.postman_collection.json \
-  --folder "User Management"
+# Run specific folder
+newman run "Postman Collections/Reqres_API_Collections.json" --folder "Page_1"
 
 # Run with custom timeout
-newman run collections/reqres-api-tests.postman_collection.json \
-  --timeout 5000
+newman run "Postman Collections/Reqres_API_Collections.json" --timeout 5000
 ```
 
 ### Using Automation Scripts
@@ -206,25 +254,25 @@ node scripts/generate-report.js
 
 ### HTML Reports
 ```bash
-newman run collections/reqres-api-tests.postman_collection.json \
+newman run "Postman Collections/Reqres_API_Collections.json" \
   -r html --reporter-html-export reports/html/report.html
 ```
 
 ### JSON Reports
 ```bash
-newman run collections/reqres-api-tests.postman_collection.json \
+newman run "Postman Collections/Reqres_API_Collections.json" \
   -r json --reporter-json-export reports/json/report.json
 ```
 
 ### JUnit Reports
 ```bash
-newman run collections/reqres-api-tests.postman_collection.json \
+newman run "Postman Collections/Reqres_API_Collections.json" \
   -r junit --reporter-junit-export reports/junit/report.xml
 ```
 
 ### Multiple Reports
 ```bash
-newman run collections/reqres-api-tests.postman_collection.json \
+newman run "Postman Collections/Reqres_API_Collections.json" \
   -r html,json,junit \
   --reporter-html-export reports/html/report.html \
   --reporter-json-export reports/json/report.json \
@@ -233,22 +281,33 @@ newman run collections/reqres-api-tests.postman_collection.json \
 
 ## Environment Configuration
 
-### Environment Variables
-- `baseUrl`: API base URL (https://reqres.in)
-- `apiVersion`: API version (v1)
-- `timeout`: Request timeout in milliseconds
-- `retries`: Number of retry attempts
+### Collection Variables Used
+- **BaseURL**: `https://reqres.in` - The ReqRes API base URL
+- **token**: Authentication token (currently set but not actively used in tests)
+- **id**: User ID stored after creating a new user for subsequent operations
+- **num**: Static user ID for delete operations
 
-### Data Files
-- **users.csv**: Test data for user creation/update operations
-- **test-data.json**: Complex test scenarios and edge cases
+### Dynamic Variables
+The collection utilizes Postman's built-in dynamic variables:
+- **{{$randomFirstName}}**: Generates random first names for user creation/update
+- **{{$randomJobTitle}}**: Generates random job titles for user creation/update
 
-### Newman Configuration
-Custom configuration file (`newman-config.json`) for:
-- Default reporters
-- Global timeouts
-- SSL settings
-- Proxy configuration
+### Environment File (Future Enhancement)
+While not currently implemented, you can create a Postman environment file:
+```json
+{
+  "id": "reqres-env",
+  "name": "ReqRes Environment",
+  "values": [
+    {
+      "key": "BaseURL",
+      "value": "https://reqres.in",
+      "type": "default",
+      "enabled": true
+    }
+  ]
+}
+```
 
 ## CI/CD Integration
 
@@ -266,7 +325,7 @@ pipeline {
         stage('API Tests') {
             steps {
                 sh 'npm install -g newman'
-                sh 'newman run collections/reqres-api-tests.postman_collection.json -r html,junit'
+                sh 'newman run "Postman Collections/Reqres_API_Collections.json" -r html,junit'
             }
         }
     }
