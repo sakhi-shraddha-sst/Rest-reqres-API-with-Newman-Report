@@ -585,7 +585,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{num}}"
+									"value": "{{id}}"
 								}
 							]
 						},
@@ -1179,7 +1179,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{num}}"
+									"value": "{{id}}"
 								}
 							]
 						},
