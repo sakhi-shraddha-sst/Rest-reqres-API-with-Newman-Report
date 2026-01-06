@@ -779,14 +779,18 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "b3b45fa9-ef21-4a78-91e4-e261691bba72",
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
-									"});"
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", jsonData.id);"
 								],
 								"type": "text/javascript",
 								"packages": {},
-								"id": "b3b45fa9-ef21-4a78-91e4-e261691bba72"
+								"requests": {}
 							}
 						}
 					],
@@ -805,7 +809,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Aminul\",\r\n  \"job\": \"SQA Engineer\"\r\n}",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"job\": \"{{$randomJobTitle}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
