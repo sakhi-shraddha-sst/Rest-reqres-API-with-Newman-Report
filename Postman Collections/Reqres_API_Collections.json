@@ -92,6 +92,7 @@
 									"var jsonData = pm.response.json();\r",
 									"pm.collectionVariables.set(\"id\", jsonData.id);\r",
 									"\r",
+									"\r",
 									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
 									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
@@ -501,23 +502,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{BaseURL}}/api/users/:id",
-							"host": [
-								"{{BaseURL}}"
-							],
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{id}}"
-								}
-							]
-						},
+						"url": "{{BaseURL}}/api/users/5",
 						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n### 📦 Sample Successful Response\n\n``` json\n{\n    \"name\": \"Najmus\",\n    \"job\": \"MARN Stack Developer\",\n    \"updatedAt\": \"2025-07-29T13:44:31.277Z\"\n}\n\n ```\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `name` | String | String First name of the users |\n| `job` | String | String Job of the Users |\n| `updatedAt` | String | String Updated At Users |\n\n### ✅ Usage Notes\n\n- This response is returned after a successful `PUT /users/:id` request.\n    \n- Ensure that proper **authentication headers** are included for update actions."
 					},
 					"response": []
@@ -1095,23 +1080,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{BaseURL}}/api/users/:id",
-							"host": [
-								"{{BaseURL}}"
-							],
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{id}}"
-								}
-							]
-						},
+						"url": "{{BaseURL}}/api/users/5",
 						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n### 📦 Sample Successful Response\n\n``` json\n{\n    \"name\": \"Najmus\",\n    \"job\": \"MARN Stack Developer\",\n    \"updatedAt\": \"2025-07-29T13:44:31.277Z\"\n}\n\n ```\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `name` | String | String First name of the users |\n| `job` | String | String Job of the Users |\n| `updatedAt` | String | String Updated At Users |\n\n### ✅ Usage Notes\n\n- This response is returned after a successful `PUT /users/:id` request.\n    \n- Ensure that proper **authentication headers** are included for update actions."
 					},
 					"response": []
