@@ -1190,6 +1190,47 @@
 			],
 			"id": "13f55ad3-36df-4bbd-a67a-6f1fe4bef311",
 			"description": "Base URL:\n\n```\nhttps://reqres.in/\n\n ```"
+		},
+		{
+			"name": "All",
+			"id": "983e08d1-a696-40ec-8f98-f0d1c4af010e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Berear {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{BaseURL}}/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"id": "835d6ef2-65d6-44e9-9976-946c781650bc",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	],
 	"event": [
