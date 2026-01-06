@@ -78,6 +78,112 @@
 					"response": []
 				},
 				{
+					"name": "Create a new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "be474dbe-9418-4f7f-99df-54ee07093d40",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"id\", jsonData.id);\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"createdAt check\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.createdAt).to.include(\"2026\")\r",
+									"});\r",
+									"\r",
+									"var schema = {\r",
+									"    \r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"job\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"         \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"createdAt\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      }};\r",
+									"\r",
+									"\r",
+									"pm.test('Schema is valid', function () {\r",
+									"pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Etag is present\", function () {\r",
+									"    pm.response.to.have.header(\"Etag\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "c4949ece-dc43-497c-aeee-58c50cc2170b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Berear {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"job\": \"{{$randomJobTitle}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseURL}}/api/users",
+						"description": "Content-Type:\n\n```\napplication/json\n\n ```"
+					},
+					"response": []
+				},
+				{
 					"name": "Fetch a single user by ID",
 					"event": [
 						{
@@ -306,112 +412,6 @@
 					"response": []
 				},
 				{
-					"name": "Create a new user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "be474dbe-9418-4f7f-99df-54ee07093d40",
-								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"id\", jsonData.id);\r",
-									"\r",
-									"\r",
-									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
-									"    const responseData = pm.response.json();\r",
-									"    pm.expect(responseData).to.be.an('object').that.is.not.empty;\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response time is less than 1000ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"createdAt check\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.createdAt).to.include(\"2026\")\r",
-									"});\r",
-									"\r",
-									"var schema = {\r",
-									"    \r",
-									"      \"type\": \"object\",\r",
-									"      \"properties\": {\r",
-									"        \"name\": {\r",
-									"          \"type\": \"string\"\r",
-									"        },\r",
-									"        \"job\": {\r",
-									"          \"type\": \"string\"\r",
-									"        },\r",
-									"         \"id\": {\r",
-									"          \"type\": \"string\"\r",
-									"        },\r",
-									"        \"createdAt\": {\r",
-									"          \"type\": \"string\"\r",
-									"        }\r",
-									"      }};\r",
-									"\r",
-									"\r",
-									"pm.test('Schema is valid', function () {\r",
-									"pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
-									"    pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json; charset=utf-8');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Content-Type is present\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Etag is present\", function () {\r",
-									"    pm.response.to.have.header(\"Etag\");\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "c4949ece-dc43-497c-aeee-58c50cc2170b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "reqres-free-v1",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Authorization",
-								"value": "Berear {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"job\": \"{{$randomJobTitle}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{BaseURL}}/api/users",
-						"description": "Content-Type:\n\n```\napplication/json\n\n ```"
-					},
-					"response": []
-				},
-				{
 					"name": "Update an existing user",
 					"event": [
 						{
@@ -570,7 +570,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{id}}"
+									"value": "{{num}}"
 								}
 							]
 						},
@@ -1148,7 +1148,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{id}}"
+									"value": "{{num}}"
 								}
 							]
 						},
