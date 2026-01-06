@@ -89,7 +89,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
 									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
 									"});\r",
 									"\r",
@@ -110,15 +110,11 @@
 									"    pm.expect(jsonData.support.text).to.eql(\"Tired of writing endless social media content? Let Content Caddy generate it for you.\");\r",
 									"});\r",
 									"\r",
-									"// pm.test(\"Email id check for specific user\", function () {\r",
-									"//     var jsonData = pm.response.json();\r",
-									"//     pm.expect(jsonData.data[3].email).to.eql(\"eve.holt@reqres.in\");\r",
-									"// });\r",
 									"\r",
-									"// pm.test(\"id check\", function () {\r",
-									"//     var jsonData = pm.response.json();\r",
-									"//     pm.expect(jsonData.data[3].id).to.eql(\"4\");\r",
-									"// });\r",
+									"pm.test(\"id check\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[3].id).to.eql(parseInt(pm.collectionVariables.get(\"num\")));\r",
+									"});\r",
 									"\r",
 									"var schema = {\r",
 									"\r",
@@ -189,19 +185,13 @@
 									"});\r",
 									"\r",
 									"\r",
-									"// pm.test(\"Response status code is 404\", function () {\r",
-									"//     pm.expect(pm.response.code).to.equal(404);\r",
-									"// });\r",
 									"\r",
 									"\r",
-									"// pm.test(\"Response has the correct Content-Type header\", function () {\r",
-									"//     pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json; charset=utf-8');\r",
-									"// });\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json; charset=utf-8');\r",
+									"});\r",
 									"\r",
 									"\r",
-									"// pm.test(\"Response time is less than 200ms\", function () {\r",
-									"//     pm.expect(pm.response.responseTime).to.be.below(200);\r",
-									"// });\r",
 									"\r",
 									"\r",
 									"pm.test(\"Response schema is NOT an empty object\", function () {\r",
@@ -212,7 +202,6 @@
 									"\r",
 									"// pm.test(\"Validate that the response body is empty when the user ID does not exist\", function () {\r",
 									"//     const responseData = pm.response.json();\r",
-									"    \r",
 									"//     pm.expect(responseData).to.be.an('object').that.is.empty;\r",
 									"// });\r",
 									""
@@ -242,7 +231,23 @@
 								"type": "text"
 							}
 						],
-						"url": "{{BaseURL}}/api/users/3",
+						"url": {
+							"raw": "{{BaseURL}}/api/users/:id",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{num}}"
+								}
+							]
+						},
 						"description": "Content-Type:\n\n```\napplication/json\n\n ```\n\n## 📦 Sample GET Single User\n\n``` json\n {\n     \"id\": 1,\n     \"email\": \"george.bluth@reqres.in\",\n     \"first_name\": \"George\",\n     \"last_name\": \"Bluth\",\n     \"avatar\": \"https://reqres.in/img/faces/1-image.jpg\"\n  }\n\n ```\n\nStartFragment\n\n### 🔍 Response Field Descriptions\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `data.id` | Integer | Unique ID of the created Users |\n| `data.email` | String | String Email of the Users |\n| `Data.first_name` | String | String First name of the Uses |\n| `data.last_name` | String | String Last name of the Uses |\n| `data.avatar` | String | String Image of the Uses |\n\n### 📘 Notes\n\n- This response is returned when fetching a User **by ID** using `GET /users/:id`.\n    \n- Make sure to handle `404 Not Found` if the users ID does not exist."
 					},
 					"response": []
